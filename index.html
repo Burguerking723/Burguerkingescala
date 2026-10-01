@@ -662,6 +662,7 @@
 
                 <div id="botoesSalvarFech" style="display:none;margin-top:10px;">
                     <button class="sucesso" onclick="salvarEscalaFechamento()">💾 Salvar Escala</button>
+                    <button onclick="adicionarFuncionario('fechamento')">➕ Adicionar Funcionário</button>
                     <button onclick="recarregarEscalaFech()">🔄 Restaurar Original</button>
                     <span style="color:#666;font-size:13px;margin-left:10px;">
                         ✅ Salvo em todos os dispositivos
@@ -670,21 +671,14 @@
             </div>
 
             <table id="tabelaFechamento">
-                <thead>
-                    <tr>
-                        <th>Dia</th>
-                        <th>Folga</th>
-                        <th>Daniel</th>
-                        <th>Mariana</th>
-                        <th>Julyan</th>
-                        <th>Thuanney</th>
-                    </tr>
+                <thead id="cabecalhoFechamento">
+                    <tr></tr>
                 </thead>
                 <tbody id="corpoFechamento"></tbody>
             </table>
 
             <p style="margin-top:12px;font-size:13px;color:#666;">
-                📌 Todos veem a escala. Digite a senha acima para poder editar.
+                📌 Todos veem a escala. Digite a senha acima para editar nomes, afazeres e adicionar funcionários.
             </p>
 
             <button onclick="window.print()">🖨 Imprimir</button>
@@ -714,6 +708,7 @@
 
                 <div id="botoesSalvarPre" style="display:none;margin-top:10px;">
                     <button class="sucesso" onclick="salvarEscalaPre()">💾 Salvar Escala</button>
+                    <button onclick="adicionarFuncionario('pre')">➕ Adicionar Funcionário</button>
                     <button onclick="recarregarEscalaPre()">🔄 Restaurar Original</button>
                     <span style="color:#666;font-size:13px;margin-left:10px;">
                         ✅ Salvo em todos os dispositivos
@@ -722,21 +717,14 @@
             </div>
 
             <table id="tabelaPre">
-                <thead>
-                    <tr>
-                        <th>Dia</th>
-                        <th>Gabriel</th>
-                        <th>Amanda</th>
-                        <th>Dandara</th>
-                        <th>Luísa</th>
-                        <th>Júlia</th>
-                    </tr>
+                <thead id="cabecalhoPre">
+                    <tr></tr>
                 </thead>
                 <tbody id="corpoPre"></tbody>
             </table>
 
             <p style="margin-top:12px;font-size:13px;color:#666;">
-                📌 Todos veem a escala. Digite a senha acima para poder editar.
+                📌 Todos veem a escala. Digite a senha acima para editar nomes, afazeres e adicionar funcionários.
             </p>
 
             <button onclick="window.print()">🖨 Imprimir</button>
@@ -1047,6 +1035,8 @@ const BREAKS_REF = db.ref("breaks");
 const DATA_REF = db.ref("dataReferencia");
 const ESCALA_FECHAMENTO_REF = db.ref("escala_fechamento");
 const ESCALA_PRE_REF = db.ref("escala_pre_fechamento");
+const EQUIPE_FECHAMENTO_REF = db.ref("equipe_fechamento");
+const EQUIPE_PRE_REF = db.ref("equipe_pre_fechamento");
 
 /* =========================================================
    CONFIGURAÇÕES
@@ -1059,6 +1049,9 @@ let podeEditarPre = false;
 
 let escalaFechamentoAtual = [];
 let escalaPreAtual = [];
+
+let funcionariosFechamento = ["Daniel", "Mariana", "Julyan", "Thuanney"];
+let funcionariosPre = ["Gabriel", "Amanda", "Dandara", "Luísa", "Júlia"];
 
 const diasSemana = [
     "Domingo",
@@ -1249,10 +1242,44 @@ function liberarEdicaoPre(){
    ESCALA DE FECHAMENTO
    ========================================================= */
 
+function desenharCabecalhoFechamento(){
+    const thead = document.getElementById("cabecalhoFechamento");
+    const tr = thead.querySelector("tr");
+
+    tr.innerHTML = `
+        <th>Dia</th>
+        <th>Folga</th>
+        ${funcionariosFechamento.map((nome, idx) => `
+            <th class="celula-editavel ${podeEditarFechamento ? "pode-editar" : ""}"
+                data-func-idx="${idx}"
+                data-tipo="fechamento">
+                ${escapeHTML(nome)}
+            </th>
+        `).join("")}
+    `;
+
+    if(podeEditarFechamento){
+        tr.querySelectorAll("th[data-func-idx]")
+            .forEach(th => configurarEdicaoFuncionario(th, "fechamento"));
+    }
+}
+
+function normalizarEscalaFechamento(){
+    escalaFechamentoAtual.forEach(linha => {
+        funcionariosFechamento.forEach((_, idx) => {
+            const campo = "c" + (idx + 1);
+            if(!(campo in linha)) linha[campo] = "";
+        });
+    });
+}
+
 function desenharTabelaFechamento(){
     const corpo = document.getElementById("corpoFechamento");
 
+    desenharCabecalhoFechamento();
     corpo.innerHTML = "";
+
+    normalizarEscalaFechamento();
 
     escalaFechamentoAtual.forEach((linha, idx) => {
 
@@ -1262,13 +1289,17 @@ function desenharTabelaFechamento(){
             ? "celula-editavel pode-editar"
             : "celula-editavel";
 
+        const tarefas = funcionariosFechamento.map((_, funcIdx) => {
+            const campo = "c" + (funcIdx + 1);
+            return `<td class="${classeEditar}" data-idx="${idx}" data-campo="${campo}">
+                        ${escapeHTML(linha[campo] ?? "")}
+                    </td>`;
+        }).join("");
+
         tr.innerHTML = `
             <td class="${classeEditar}" data-idx="${idx}" data-campo="dia">${escapeHTML(linha.dia)}</td>
             <td class="${classeEditar}" data-idx="${idx}" data-campo="folga">${escapeHTML(linha.folga)}</td>
-            <td class="${classeEditar}" data-idx="${idx}" data-campo="c1">${escapeHTML(linha.c1)}</td>
-            <td class="${classeEditar}" data-idx="${idx}" data-campo="c2">${escapeHTML(linha.c2)}</td>
-            <td class="${classeEditar}" data-idx="${idx}" data-campo="c3">${escapeHTML(linha.c3)}</td>
-            <td class="${classeEditar}" data-idx="${idx}" data-campo="c4">${escapeHTML(linha.c4)}</td>
+            ${tarefas}
         `;
 
         corpo.appendChild(tr);
@@ -1280,21 +1311,23 @@ function desenharTabelaFechamento(){
     }
 }
 
-function salvarEscalaFechamento(){
+async function salvarEscalaFechamento(){
     if(!podeEditarFechamento){
         alert("🔒 Libere a edição primeiro.");
         return;
     }
 
-    ESCALA_FECHAMENTO_REF
-        .set(escalaFechamentoAtual)
-        .then(() => {
-            alert("✅ Escala salva! Atualizada em tempo real para todos.");
-        })
-        .catch(error => {
-            console.error(error);
-            alert("❌ Não foi possível salvar. Verifique as regras do Firebase.");
-        });
+    try{
+        await Promise.all([
+            ESCALA_FECHAMENTO_REF.set(escalaFechamentoAtual),
+            EQUIPE_FECHAMENTO_REF.set(funcionariosFechamento)
+        ]);
+
+        alert("✅ Escala salva! Nomes e afazeres atualizados em tempo real para todos.");
+    }catch(error){
+        console.error(error);
+        alert("❌ Não foi possível salvar. Verifique as regras do Firebase.");
+    }
 }
 
 function recarregarEscalaFech(){
@@ -1307,11 +1340,14 @@ function recarregarEscalaFech(){
         escalaFechamentoAtual =
             JSON.parse(JSON.stringify(ESCALA_FECHAMENTO_PADRAO));
 
-        ESCALA_FECHAMENTO_REF
-            .set(escalaFechamentoAtual)
+        funcionariosFechamento =
+            ["Daniel", "Mariana", "Julyan", "Thuanney"];
+
+        ESCALA_FECHAMENTO_REF.set(escalaFechamentoAtual)
+            .then(() => EQUIPE_FECHAMENTO_REF.set(funcionariosFechamento))
             .then(() => {
                 desenharTabelaFechamento();
-                alert("✅ Restaurada e salva!");
+                alert("✅ Escala restaurada e salva!");
             })
             .catch(error => {
                 console.error(error);
@@ -1330,14 +1366,67 @@ function carregarEscalaFechamento(snap){
     desenharTabelaFechamento();
 }
 
+function carregarEquipeFechamento(snap){
+    const dados = snap.val();
+
+    if(Array.isArray(dados) && dados.length){
+        funcionariosFechamento = dados;
+    }
+
+    desenharTabelaFechamento();
+}
+
 /* =========================================================
    ESCALA DE PRÉ-FECHAMENTO
    ========================================================= */
 
+function desenharCabecalhoPre(){
+    const thead = document.getElementById("cabecalhoPre");
+    const tr = thead.querySelector("tr");
+
+    tr.innerHTML = `
+        <th>Dia</th>
+        ${funcionariosPre.map((nome, idx) => `
+            <th class="celula-editavel ${podeEditarPre ? "pode-editar" : ""}"
+                data-func-idx="${idx}"
+                data-tipo="pre">
+                ${escapeHTML(nome)}
+            </th>
+        `).join("")}
+    `;
+
+    if(podeEditarPre){
+        tr.querySelectorAll("th[data-func-idx]")
+            .forEach(th => configurarEdicaoFuncionario(th, "pre"));
+    }
+}
+
+function normalizarEscalaPre(){
+    escalaPreAtual.forEach(linha => {
+        funcionariosPre.forEach((_, idx) => {
+            const campo = campoFuncionarioPre(idx);
+            if(!(campo in linha)) linha[campo] = "";
+        });
+    });
+}
+
+function campoFuncionarioPre(idx){
+    const campos = ["g", "a", "d", "l", "j"];
+
+    if(idx < campos.length){
+        return campos[idx];
+    }
+
+    return "f" + (idx + 1);
+}
+
 function desenharTabelaPre(){
     const corpo = document.getElementById("corpoPre");
 
+    desenharCabecalhoPre();
     corpo.innerHTML = "";
+
+    normalizarEscalaPre();
 
     escalaPreAtual.forEach((linha, idx) => {
 
@@ -1347,13 +1436,16 @@ function desenharTabelaPre(){
             ? "celula-editavel pode-editar"
             : "celula-editavel";
 
+        const tarefas = funcionariosPre.map((_, funcIdx) => {
+            const campo = campoFuncionarioPre(funcIdx);
+            return `<td class="${classeEditar}" data-idx="${idx}" data-campo="${campo}">
+                        ${escapeHTML(linha[campo] ?? "")}
+                    </td>`;
+        }).join("");
+
         tr.innerHTML = `
             <td class="${classeEditar}" data-idx="${idx}" data-campo="dia">${escapeHTML(linha.dia)}</td>
-            <td class="${classeEditar}" data-idx="${idx}" data-campo="g">${escapeHTML(linha.g)}</td>
-            <td class="${classeEditar}" data-idx="${idx}" data-campo="a">${escapeHTML(linha.a)}</td>
-            <td class="${classeEditar}" data-idx="${idx}" data-campo="d">${escapeHTML(linha.d)}</td>
-            <td class="${classeEditar}" data-idx="${idx}" data-campo="l">${escapeHTML(linha.l)}</td>
-            <td class="${classeEditar}" data-idx="${idx}" data-campo="j">${escapeHTML(linha.j)}</td>
+            ${tarefas}
         `;
 
         corpo.appendChild(tr);
@@ -1365,21 +1457,23 @@ function desenharTabelaPre(){
     }
 }
 
-function salvarEscalaPre(){
+async function salvarEscalaPre(){
     if(!podeEditarPre){
         alert("🔒 Libere a edição primeiro.");
         return;
     }
 
-    ESCALA_PRE_REF
-        .set(escalaPreAtual)
-        .then(() => {
-            alert("✅ Escala salva! Atualizada em tempo real para todos.");
-        })
-        .catch(error => {
-            console.error(error);
-            alert("❌ Não foi possível salvar. Verifique as regras do Firebase.");
-        });
+    try{
+        await Promise.all([
+            ESCALA_PRE_REF.set(escalaPreAtual),
+            EQUIPE_PRE_REF.set(funcionariosPre)
+        ]);
+
+        alert("✅ Escala salva! Nomes e afazeres atualizados em tempo real para todos.");
+    }catch(error){
+        console.error(error);
+        alert("❌ Não foi possível salvar. Verifique as regras do Firebase.");
+    }
 }
 
 function recarregarEscalaPre(){
@@ -1392,11 +1486,14 @@ function recarregarEscalaPre(){
         escalaPreAtual =
             JSON.parse(JSON.stringify(ESCALA_PRE_PADRAO));
 
-        ESCALA_PRE_REF
-            .set(escalaPreAtual)
+        funcionariosPre =
+            ["Gabriel", "Amanda", "Dandara", "Luísa", "Júlia"];
+
+        ESCALA_PRE_REF.set(escalaPreAtual)
+            .then(() => EQUIPE_PRE_REF.set(funcionariosPre))
             .then(() => {
                 desenharTabelaPre();
-                alert("✅ Restaurada e salva!");
+                alert("✅ Escala restaurada e salva!");
             })
             .catch(error => {
                 console.error(error);
@@ -1413,6 +1510,144 @@ function carregarEscalaPre(snap){
         : JSON.parse(JSON.stringify(ESCALA_PRE_PADRAO));
 
     desenharTabelaPre();
+}
+
+function carregarEquipePre(snap){
+    const dados = snap.val();
+
+    if(Array.isArray(dados) && dados.length){
+        funcionariosPre = dados;
+    }
+
+    desenharTabelaPre();
+}
+
+/* =========================================================
+   ADICIONAR FUNCIONÁRIOS
+   ========================================================= */
+
+function adicionarFuncionario(tipo){
+    const lista = tipo === "fechamento"
+        ? funcionariosFechamento
+        : funcionariosPre;
+
+    if(tipo === "fechamento" && !podeEditarFechamento){
+        alert("🔒 Libere a edição primeiro.");
+        return;
+    }
+
+    if(tipo === "pre" && !podeEditarPre){
+        alert("🔒 Libere a edição primeiro.");
+        return;
+    }
+
+    const nome = prompt("Digite o nome do novo funcionário:");
+
+    if(nome === null) return;
+
+    const nomeLimpo = nome.trim();
+
+    if(!nomeLimpo){
+        alert("⚠️ Digite um nome válido.");
+        return;
+    }
+
+    if(lista.some(n => n.toLowerCase() === nomeLimpo.toLowerCase())){
+        alert("⚠️ Esse funcionário já está cadastrado nesta escala.");
+        return;
+    }
+
+    lista.push(nomeLimpo);
+
+    if(tipo === "fechamento"){
+        const campo = "c" + lista.length;
+
+        escalaFechamentoAtual.forEach(linha => {
+            linha[campo] = "";
+        });
+
+        desenharTabelaFechamento();
+    }else{
+        const campo = campoFuncionarioPre(lista.length - 1);
+
+        escalaPreAtual.forEach(linha => {
+            linha[campo] = "";
+        });
+
+        desenharTabelaPre();
+    }
+
+    alert(`✅ ${nomeLimpo} foi adicionado à escala. Clique em "Salvar Escala" para gravar a alteração.`);
+}
+
+function configurarEdicaoFuncionario(th, tipo){
+    th.onclick = function(){
+
+        if(this.querySelector("input")) return;
+
+        const idx = Number(this.dataset.funcIdx);
+        const lista = tipo === "fechamento"
+            ? funcionariosFechamento
+            : funcionariosPre;
+
+        const valorAtual = lista[idx];
+
+        const input = document.createElement("input");
+        input.type = "text";
+        input.value = valorAtual;
+
+        input.style.width = "100%";
+        input.style.padding = "6px";
+        input.style.border = "none";
+        input.style.borderRadius = "6px";
+        input.style.textAlign = "center";
+        input.style.fontWeight = "700";
+
+        this.innerHTML = "";
+        this.appendChild(input);
+
+        input.focus();
+        input.select();
+
+        let finalizado = false;
+
+        const salvar = () => {
+            if(finalizado) return;
+
+            finalizado = true;
+
+            const novoNome = input.value.trim();
+
+            if(novoNome){
+                lista[idx] = novoNome;
+            }
+
+            if(tipo === "fechamento"){
+                desenharTabelaFechamento();
+            }else{
+                desenharTabelaPre();
+            }
+        };
+
+        input.addEventListener("blur", salvar);
+
+        input.addEventListener("keydown", function(e){
+            if(e.key === "Enter"){
+                e.preventDefault();
+                salvar();
+            }
+
+            if(e.key === "Escape"){
+                finalizado = true;
+
+                if(tipo === "fechamento"){
+                    desenharTabelaFechamento();
+                }else{
+                    desenharTabelaPre();
+                }
+            }
+        });
+    };
 }
 
 /* =========================================================
@@ -2088,11 +2323,29 @@ ESCALA_FECHAMENTO_REF.on(
     }
 );
 
+EQUIPE_FECHAMENTO_REF.on(
+    "value",
+    carregarEquipeFechamento,
+    error => {
+        console.error("Firebase equipe fechamento:", error);
+        atualizarStatusFirebase(false);
+    }
+);
+
 ESCALA_PRE_REF.on(
     "value",
     carregarEscalaPre,
     error => {
         console.error("Firebase pré-fechamento:", error);
+        atualizarStatusFirebase(false);
+    }
+);
+
+EQUIPE_PRE_REF.on(
+    "value",
+    carregarEquipePre,
+    error => {
+        console.error("Firebase equipe pré-fechamento:", error);
         atualizarStatusFirebase(false);
     }
 );
