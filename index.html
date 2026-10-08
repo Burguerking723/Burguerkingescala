@@ -17,7 +17,12 @@ body.escuro{--pagina:linear-gradient(135deg,#1a1a2e,#16213e);--card:#1f2937;--fo
 html,body{width:100%;min-height:100vh;overflow-x:hidden}
 body{background:var(--pagina);color:var(--texto)}
 button{background:linear-gradient(90deg,#D62300,#B61C00);color:#fff;border:0;padding:10px 18px;border-radius:10px;cursor:pointer;font-weight:600;margin:8px 8px 0 0;box-shadow:0 4px 12px #d623004d}
-button:hover{transform:translateY(-1px)}button.sucesso{background:linear-gradient(90deg,#10b981,#059669)}button.azul{background:linear-gradient(90deg,#3b82f6,#2563eb)}button.vermelho{background:linear-gradient(90deg,#ef4444,#dc2626);padding:5px 8px;font-size:12px;margin:0}
+button:hover{transform:translateY(-1px)}
+/* Melhorias de uso no celular */
+.btn-editar-principal{display:block;width:100%;font-size:16px;padding:14px;margin:8px 0 14px;background:linear-gradient(90deg,#ff7b00,#d62300)}
+.celula-editavel select,.celula-editavel input{min-width:125px;min-height:42px;font-size:14px;padding:8px;border:2px solid #ff7b00;border-radius:9px;background:var(--card);color:var(--texto)}
+.dia-destaque{display:inline-block;background:#ff7b00;color:#171717;padding:4px 9px;border-radius:8px;font-weight:800}
+.menu-mobile{display:none}button.sucesso{background:linear-gradient(90deg,#10b981,#059669)}button.azul{background:linear-gradient(90deg,#3b82f6,#2563eb)}button.vermelho{background:linear-gradient(90deg,#ef4444,#dc2626);padding:5px 8px;font-size:12px;margin:0}
 aside{width:220px;background:linear-gradient(180deg,#1f1f1f,#2a2a2a);color:#fff;padding:20px 15px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100;box-shadow:4px 0 20px #0004;transition:.35s}
 aside.minimizado{width:70px;padding:15px 8px}aside.minimizado .logo span,aside.minimizado .logo p,aside.minimizado .menu a span{display:none}aside.minimizado .menu a{justify-content:center;padding:14px 0;font-size:20px}
 .btn-toggle{width:100%;padding:10px;margin-bottom:10px;border-radius:12px;background:linear-gradient(90deg,#FF7B00,#FF8C00);color:#000;font-size:20px}
@@ -40,13 +45,13 @@ table{width:100%;border-collapse:separate;border-spacing:0;border-radius:12px;ov
 .controle-qtd{display:flex;align-items:center;justify-content:center;gap:7px}.btn-qtd{width:34px;height:34px;padding:0;margin:0;border-radius:9px;font-size:20px;display:inline-flex;align-items:center;justify-content:center}.btn-qtd.menos{background:#ef4444}.btn-qtd.mais{background:#10b981}.qtd-valor{font-size:17px;font-weight:800;color:#D62300}.produto-registro{text-align:left!important;font-weight:700}
 #resumo{background:var(--form);padding:12px 15px;border-radius:10px;font-size:14px;font-weight:600}
 #caixaResultado{margin-top:20px;padding:20px;background:var(--form);border-radius:12px;display:none}
-@media(max-width:768px){aside,aside.minimizado{position:relative;width:100%;height:auto;padding:15px}.menu a{display:none}aside .logo{margin-bottom:10px}main,main.expandido{width:100%;margin:0;padding:20px}table{min-width:650px}.aviso-conteudo{flex-direction:column;align-items:stretch}.aviso-editar{position:static;width:100%;margin-bottom:10px}.linha-form{flex-direction:column;align-items:stretch}.linha-form input,.linha-form select,.linha-form textarea{width:100%}}
+@media(max-width:768px){aside,aside.minimizado{position:relative;width:100%;height:auto;padding:12px}.menu a{display:flex;padding:11px 12px;margin-bottom:5px}.menu-mobile{display:block;width:100%;margin:4px 0 10px;padding:12px;font-size:16px}.menu.fechado a{display:none}aside .logo{margin-bottom:10px}main,main.expandido{width:100%;margin:0;padding:20px}table{min-width:650px}.aviso-conteudo{flex-direction:column;align-items:stretch}.aviso-editar{position:static;width:100%;margin-bottom:10px}.linha-form{flex-direction:column;align-items:stretch}.linha-form input,.linha-form select,.linha-form textarea{width:100%}}
 @media print{aside,button,.editar-discreto,.painel-edicao-discreto,.aviso-editar,.relogio{display:none!important}main{width:100%;margin:0;padding:10px}body{background:#fff}.tabela{box-shadow:none}}
 </style>
 </head>
 <body>
 <aside id="sidebar">
-<button class="btn-toggle" onclick="toggleMenu()">◀</button>
+<button class="btn-toggle menu-mobile" onclick="alternarMenuCelular()">☰ Abrir menu</button><button class="btn-toggle" onclick="toggleMenu()">◀ Recolher menu</button>
 <button class="btn-toggle btn-tema" onclick="alternarTema()">🌙 Tema</button>
 <div class="logo"><h1>🍔 <span>BK Escala</span></h1><p>Sistema de Escala Oficial</p></div>
 <div class="status-sinc conectado" id="statusSinc">✅ Sincronizado em tempo real</div>
@@ -72,7 +77,7 @@ Todos devem conferir suas funções antes de iniciar o turno.</textarea><button 
 </div>
 <div class="tabela">
 <h2>Escala de Fechamento — Hoje</h2>
-<div class="editar-discreto"><button class="btn-editar-discreto" onclick="abrirEdicaoFech()" title="Modificar escala">⚙️</button></div>
+<button class="btn-editar-principal" onclick="abrirEdicaoFech()">✏️ EDITAR ESCALA PELO CELULAR</button>
 <div class="painel-edicao-discreto" id="painelEdicaoFech">
 <input type="password" id="senhaFech" placeholder="Senha">
 <button class="azul" onclick="liberarEdicaoFech()">Entrar</button>
@@ -94,7 +99,7 @@ Todos devem conferir suas funções antes de iniciar o turno.</textarea><button 
 </div>
 <div class="tabela">
 <h2>Escala de Pré-Fechamento — Hoje</h2>
-<div class="editar-discreto"><button class="btn-editar-discreto" onclick="abrirEdicaoPre()" title="Modificar escala">⚙️</button></div>
+<button class="btn-editar-principal" onclick="abrirEdicaoPre()">✏️ EDITAR ESCALA PELO CELULAR</button>
 <div class="painel-edicao-discreto" id="painelEdicaoPre">
 <input type="password" id="senhaPre" placeholder="Senha">
 <button class="azul" onclick="liberarEdicaoPre()">Entrar</button>
@@ -176,6 +181,7 @@ function hojeIndice(){return new Date().getDay()}
 function esc(v){return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
 function dataHoje(){return new Date().toLocaleDateString("pt-BR")}
 function toggleMenu(){document.getElementById("sidebar").classList.toggle("minimizado");document.getElementById("conteudo").classList.toggle("expandido")}
+function alternarMenuCelular(){document.querySelector(".menu").classList.toggle("fechado")}
 function alternarTema(){document.body.classList.toggle("escuro");localStorage.setItem("tema",document.body.classList.contains("escuro")?"escuro":"claro")}
 if(localStorage.getItem("tema")==="escuro")document.body.classList.add("escuro");
 function mostrarPagina(id,link){document.querySelectorAll(".pagina").forEach(p=>p.classList.remove("ativa"));document.querySelectorAll(".menu a").forEach(a=>a.classList.remove("ativo"));document.getElementById("pag-"+id).classList.add("ativa");if(link)link.classList.add("ativo")}
@@ -192,6 +198,9 @@ AVISO_PRE_REF.on("value",s=>{const d=s.val();if(d?.mensagem){document.getElement
 function abrirEdicaoFech(){document.getElementById("painelEdicaoFech").classList.toggle("visivel")}
 function abrirEdicaoPre(){document.getElementById("painelEdicaoPre").classList.toggle("visivel")}
 
+const OPCOES_FECH=["—","— FOLGA —","Broiler","Coifa","Mesa","Louça","Broiler + Mesa","Mesa + Broiler","Mesa + Coifa","Louça + Mesa","Mesa + Louça","Louça + Broiler","Coifa + Mesa","Louça + Coifa"];
+const OPCOES_PRE=["—","Folga","Freezer","Batateira","Freezer Frango","Freezer Carne","Lixeiras","Freezer Carne ■ Lixeiras","Freezer Frango ■ Lixeiras","Lixeiras ■ Freezer Frango","Lixeiras ■ Freezer Carne"];
+function campoEscala(valor,atributos,opcoes){const atual=String(valor||"—");const lista=[...opcoes];if(!lista.includes(atual))lista.push(atual);return `<select ${atributos}>${lista.map(o=>`<option value="${esc(o)}" ${o===atual?"selected":""}>${esc(o)}</option>`).join("")}</select>`}
 function renderizarCabecalhoFech(){const c=document.querySelector("#cabecalhoFechamento tr");c.innerHTML="<th>Dia</th><th>Folga</th>";funcionariosFechamento.forEach(n=>{const th=document.createElement("th");th.textContent=n;c.appendChild(th)})}
 function renderizarCabecalhoPre(){const c=document.querySelector("#cabecalhoPre tr");c.innerHTML="<th>Dia</th>";funcionariosPre.forEach(n=>{const th=document.createElement("th");th.textContent=n;c.appendChild(th)})}
 
@@ -199,11 +208,11 @@ function renderizarEscalaFechamento(){
  const i=hojeIndice(),d=escalaFechamentoAtual[i]||{};
  const corpo=document.getElementById("corpoFechamento");corpo.innerHTML="";
  const tr=document.createElement("tr");
- let html=`<td><strong>${diasSemana[i]}</strong><br>${dataHoje()}</td>`;
- html+=`<td class="celula-editavel">${podeEditarFechamento?`<input data-tipo="folga" value="${esc(d.folga||"")}">`:esc(d.folga||"-")}</td>`;
- funcionariosFechamento.forEach(n=>{html+=`<td class="celula-editavel">${podeEditarFechamento?`<input data-func="${esc(n)}" value="${esc(d[n]||"")}">`:esc(d[n]||"")}</td>`});
+ let html=`<td><span class="dia-destaque">${diasSemana[i]}</span><br>${dataHoje()}</td>`;
+ html+=`<td class="celula-editavel">${podeEditarFechamento?`<input data-tipo="folga" list="opcoesFolga" value="${esc(d.folga||"")}" aria-label="Folga">`:esc(d.folga||"-")}</td>`;
+ funcionariosFechamento.forEach(n=>{html+=`<td class="celula-editavel">${podeEditarFechamento?`<select data-func="${esc(n)}" aria-label="Função de ${esc(n)}">${[...new Set([...OPCOES_FECH,String(d[n]||"—")])].map(o=>`<option value="${esc(o)}" ${o===String(d[n]||"—")?"selected":""}>${esc(o)}</option>`).join("")}</select>`:esc(d[n]||"")}</td>`});
  tr.innerHTML=html;corpo.appendChild(tr);
- if(podeEditarFechamento)tr.querySelectorAll("input").forEach(inp=>inp.addEventListener("input",()=>{if(inp.dataset.tipo==="folga")d.folga=inp.value;else d[inp.dataset.func]=inp.value;escalaFechamentoAtual[i]=d}))
+ if(podeEditarFechamento)tr.querySelectorAll("input, select").forEach(inp=>inp.addEventListener("input",()=>{if(inp.dataset.tipo==="folga")d.folga=inp.value;else d[inp.dataset.func]=inp.value;escalaFechamentoAtual[i]=d}))
 }
 function liberarEdicaoFech(){if(document.getElementById("senhaFech").value===SENHA_EDICAO){podeEditarFechamento=true;document.getElementById("statusEditFechado").textContent="🔓 Liberado";document.getElementById("statusEditFechado").className="status-edicao liberado";document.getElementById("botoesSalvarFech").style.display="block";renderizarEscalaFechamento()}else alert("❌ Senha incorreta!")}
 function bloquearEdicaoFech(){podeEditarFechamento=false;document.getElementById("statusEditFechado").textContent="🔒 Bloqueado";document.getElementById("statusEditFechado").className="status-edicao bloqueado";document.getElementById("botoesSalvarFech").style.display="none";document.getElementById("senhaFech").value="";renderizarEscalaFechamento()}
@@ -215,10 +224,10 @@ EQUIPE_FECHAMENTO_REF.on("value",s=>{funcionariosFechamento=s.val()||["Daniel","
 
 function renderizarEscalaPre(){
  const i=hojeIndice(),d=escalaPreAtual[i]||{},corpo=document.getElementById("corpoPre");corpo.innerHTML="";
- const tr=document.createElement("tr");let html=`<td><strong>${diasSemana[i]}</strong><br>${dataHoje()}</td>`;
- funcionariosPre.forEach(n=>{html+=`<td class="celula-editavel">${podeEditarPre?`<input data-func="${esc(n)}" value="${esc(d[n]||"")}">`:esc(d[n]||"")}</td>`});
+ const tr=document.createElement("tr");let html=`<td><span class="dia-destaque">${diasSemana[i]}</span><br>${dataHoje()}</td>`;
+ funcionariosPre.forEach(n=>{html+=`<td class="celula-editavel">${podeEditarPre?`<select data-func="${esc(n)}" aria-label="Função de ${esc(n)}">${[...new Set([...OPCOES_PRE,String(d[n]||"—")])].map(o=>`<option value="${esc(o)}" ${o===String(d[n]||"—")?"selected":""}>${esc(o)}</option>`).join("")}</select>`:esc(d[n]||"")}</td>`});
  tr.innerHTML=html;corpo.appendChild(tr);
- if(podeEditarPre)tr.querySelectorAll("input").forEach(inp=>inp.addEventListener("input",()=>{d[inp.dataset.func]=inp.value;escalaPreAtual[i]=d}))
+ if(podeEditarPre)tr.querySelectorAll("input, select").forEach(inp=>inp.addEventListener("input",()=>{d[inp.dataset.func]=inp.value;escalaPreAtual[i]=d}))
 }
 function liberarEdicaoPre(){if(document.getElementById("senhaPre").value===SENHA_EDICAO){podeEditarPre=true;document.getElementById("statusEditPre").textContent="🔓 Liberado";document.getElementById("statusEditPre").className="status-edicao liberado";document.getElementById("botoesSalvarPre").style.display="block";renderizarEscalaPre()}else alert("❌ Senha incorreta!")}
 function bloquearEdicaoPre(){podeEditarPre=false;document.getElementById("statusEditPre").textContent="🔒 Bloqueado";document.getElementById("statusEditPre").className="status-edicao bloqueado";document.getElementById("botoesSalvarPre").style.display="none";document.getElementById("senhaPre").value="";renderizarEscalaPre()}
