@@ -59,7 +59,7 @@ body.escuro .escala-topo h3{color:#ff8a35}
 .escala-item{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid #e7e7e7;border-left:4px solid #ff7b00;border-radius:13px;background:#fff;box-shadow:0 4px 12px #00000008;transition:transform .18s,box-shadow .18s;color:#242424}
 .escala-item:hover{transform:translateY(-2px);box-shadow:0 7px 18px #d6230018}
 body.escuro .escala-item{background:#273244;border-color:#3b4658;color:#f3f4f6}
-.escala-avatar{width:52px;height:52px;flex:0 0 52px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#fff0e4;color:#b52a08;font-size:16px;font-weight:800;border:2px solid #ff7b00;position:relative}.escala-avatar img{width:100%;height:100%;object-fit:cover}.foto-editar{display:block;border:0;background:transparent;color:#d45b00;font-size:10px;padding:3px 0;margin:2px auto 0;box-shadow:none;white-space:nowrap}.escala-identidade{display:flex;flex-direction:column;align-items:center;flex:0 0 58px;gap:0}.escala-item{flex-wrap:wrap}
+.escala-avatar{width:42px;height:42px;flex:0 0 42px;border-radius:13px;display:flex;align-items:center;justify-content:center;background:#fff0e4;color:#b52a08;font-size:16px;font-weight:800}
 body.escuro .escala-avatar{background:#49362e;color:#ffb27b}
 .escala-pessoa{flex:1;min-width:0;font-weight:700;font-size:14px}
 .escala-tarefa{display:inline-flex;align-items:center;justify-content:flex-end;text-align:right;max-width:62%;padding:7px 11px;border-radius:9px;background:#fff1e8;color:#9f2a0d;font-size:13px;font-weight:700;line-height:1.35}
@@ -71,9 +71,59 @@ body.escuro .escala-tarefa.folga{background:#164634;color:#a7f3d0}
 .escala-editar-btn{width:30px;height:30px;border-radius:50%;padding:0;margin:0;background:transparent;border:1px solid #9995;color:#8b8b8b;box-shadow:none;font-size:14px;opacity:.65}
 .escala-editar-btn:hover{opacity:1;background:#ff7b0015;color:#d62300}
 .escala-folga-edit{max-width:760px;margin:0 auto 12px;padding:10px 13px;border-radius:10px;background:var(--form);font-size:13px}
-@media(max-width:768px){.escala-topo{padding:20px 12px;margin-bottom:14px}.escala-item{padding:12px;gap:10px}.escala-avatar{width:42px;height:42px;flex-basis:42px}.escala-identidade{flex-basis:46px}.foto-editar{font-size:9px}.escala-pessoa{font-size:13px}.escala-tarefa{font-size:12px;max-width:58%;padding:7px 8px}.escala-item select,.escala-item input{max-width:58%;font-size:12px}.escala-editar-linha{margin-top:-7px}}
+@media(max-width:768px){.escala-topo{padding:20px 12px;margin-bottom:14px}.escala-item{padding:12px;gap:10px}.escala-avatar{width:38px;height:38px;flex-basis:38px}.escala-pessoa{font-size:13px}.escala-tarefa{font-size:12px;max-width:58%;padding:7px 8px}.escala-item select,.escala-item input{max-width:58%;font-size:12px}.escala-editar-linha{margin-top:-7px}}
 @media(max-width:768px){aside,aside.minimizado{position:relative;width:100%;height:auto;padding:12px}.menu a{display:flex;padding:11px 12px;margin-bottom:5px}.menu-mobile{display:block;width:100%;margin:4px 0 10px;padding:12px;font-size:16px}.menu.fechado a{display:none}aside .logo{margin-bottom:10px}main,main.expandido{width:100%;margin:0;padding:20px}table{min-width:650px}.aviso-conteudo{flex-direction:column;align-items:stretch}.aviso-editar{position:static;width:100%;margin-bottom:10px}.linha-form{flex-direction:column;align-items:stretch}.linha-form input,.linha-form select,.linha-form textarea{width:100%}}
 @media print{aside,button,.editar-discreto,.painel-edicao-discreto,.aviso-editar,.relogio{display:none!important}main{width:100%;margin:0;padding:10px}body{background:#fff}.tabela{box-shadow:none}}
+
+/* Melhorias dinâmicas e fotos de funcionários */
+button,a,.tabela,.caixa-form,.escala-item{transition:transform .18s ease,box-shadow .18s ease,background-color .18s ease}
+button:hover{filter:brightness(1.06)}
+.escala-avatar{width:48px;height:48px;flex:0 0 48px;border-radius:50%;display:flex;align-items:center;justify-content:center;overflow:hidden;background:linear-gradient(135deg,#ff7b00,#d62300);color:#fff;font-weight:800;border:2px solid #ffb36b;box-shadow:0 3px 10px #0002}
+.escala-avatar img{width:100%;height:100%;object-fit:cover}
+.escala-item{flex-wrap:wrap}.foto-func-btn{font-size:11px;padding:6px 8px;margin:0 0 0 auto;background:#374151;box-shadow:none;white-space:nowrap}
+.dashboard-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:16px 0 25px}
+.dashboard-card{background:var(--card);color:var(--texto);padding:20px;border-radius:16px;border-top:4px solid #D62300;box-shadow:0 8px 24px #0001}
+.dashboard-card .numero{font-size:30px;font-weight:800;color:#D62300;margin-top:7px}
+.dashboard-card .rotulo{font-size:13px;font-weight:600;opacity:.8}
+.atalhos{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 20px}
+.toast-bk{position:fixed;right:20px;bottom:20px;z-index:9999;max-width:min(400px,calc(100vw - 40px));padding:14px 18px;background:#166534;color:white;border-radius:12px;box-shadow:0 10px 30px #0003;animation:aparecer .2s ease}
+.status-salvando{font-size:12px;color:var(--texto);margin-left:8px}
+@media(max-width:768px){.foto-func-btn{margin-left:0}.dashboard-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard-card{padding:14px}.dashboard-card .numero{font-size:24px}}
+
+/* BK Escala 2.0 — camada visual/interativa adicional */
+:root{scroll-behavior:smooth}
+button,.dashboard-card,.menu a,.escala-item,.tabela,.caixa-form{transition:transform .2s ease,box-shadow .2s ease,filter .2s ease,border-color .2s ease}
+button:active{transform:scale(.97)}
+.dashboard-card{position:relative;overflow:hidden}
+.dashboard-card:after{content:"";position:absolute;inset:auto -35px -45px auto;width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,#ff7b0020,#d6230010);pointer-events:none}
+.dashboard-card:hover{transform:translateY(-4px);box-shadow:0 14px 28px #0002}
+.menu a{position:relative;overflow:hidden}
+.menu a:after{content:"";position:absolute;left:0;top:15%;height:70%;width:3px;background:#ffb36b;transform:scaleY(0);transition:transform .2s}
+.menu a:hover:after,.menu a.ativo:after{transform:scaleY(1)}
+.topbar-extra{position:fixed;top:14px;right:18px;z-index:90;display:flex;gap:8px;align-items:center}
+.topbar-extra button{margin:0;padding:9px 12px;border-radius:12px}
+.bk-icon-btn{position:relative;background:#202020;color:#fff;box-shadow:0 5px 16px #0003}
+.bk-badge{position:absolute;right:-5px;top:-5px;background:#ff7b00;color:#171717;border-radius:99px;min-width:20px;height:20px;padding:1px 5px;font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center}
+.bk-notify-panel{display:none;position:fixed;right:18px;top:65px;width:min(370px,calc(100vw - 28px));max-height:70vh;overflow:auto;z-index:200;background:var(--card);color:var(--texto);border:1px solid var(--borda);border-radius:18px;padding:16px;box-shadow:0 18px 50px #0004}
+.bk-notify-panel.aberto{display:block;animation:aparecer .2s ease}
+.bk-notify-item{padding:12px;border-radius:12px;background:var(--form);margin:8px 0;font-size:13px}
+.bk-notify-item strong{display:block;margin-bottom:4px}
+.bk-fab{position:fixed;right:22px;bottom:22px;z-index:120;width:58px;height:58px;border-radius:50%;font-size:27px;padding:0;margin:0;box-shadow:0 8px 24px #0004}
+.bk-fab-menu{display:none;position:fixed;right:22px;bottom:90px;z-index:119;flex-direction:column;align-items:flex-end;gap:6px}
+.bk-fab-menu.aberto{display:flex;animation:aparecer .18s ease}
+.bk-fab-menu button{margin:0;box-shadow:0 5px 18px #0003}
+.bk-toast-area{position:fixed;right:18px;bottom:90px;z-index:300;display:flex;flex-direction:column;gap:8px;max-width:min(360px,calc(100vw - 36px))}
+.bk-toast{background:#163b2a;color:#fff;border-left:5px solid #22c55e;border-radius:12px;padding:12px 16px;box-shadow:0 8px 25px #0003;animation:aparecer .2s ease;font-size:13px}
+.bk-toast.erro{background:#4a1717;border-color:#ef4444}
+.bk-pendencias{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:12px 0 24px}
+.bk-pendencia{background:var(--card);color:var(--texto);border-radius:14px;padding:15px;border-left:5px solid #ff7b00;box-shadow:0 5px 18px #0001}
+.bk-pendencia strong{display:block;margin-bottom:5px}
+.bk-busca{width:100%;padding:12px 15px;border:2px solid var(--borda);border-radius:12px;background:var(--card);color:var(--texto);margin:0 0 14px}
+.bk-progresso{height:10px;background:#0001;border-radius:99px;overflow:hidden;margin-top:10px}
+.bk-progresso span{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff7b00,#d62300);border-radius:99px;transition:width .5s ease}
+@media(max-width:768px){.topbar-extra{top:8px;right:8px}.topbar-extra button{padding:8px}.bk-fab{right:14px;bottom:14px}.bk-fab-menu{right:14px;bottom:80px}header{padding-top:42px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
 </style>
 </head>
 <body>
@@ -83,6 +133,7 @@ body.escuro .escala-tarefa.folga{background:#164634;color:#a7f3d0}
 <div class="logo"><h1>🍔 <span>BK Escala</span></h1><p>Sistema de Escala Oficial</p></div>
 <div class="status-sinc conectado" id="statusSinc">✅ Sincronizado em tempo real</div>
 <nav class="menu">
+<a onclick="mostrarPagina('inicio',this)">📊 <span>Visão Geral</span></a>
 <a class="ativo" onclick="mostrarPagina('fechamento',this)">📋 <span>Escala de Fechamento</span></a>
 <a onclick="mostrarPagina('pre-fechamento',this)">🔧 <span>Escala de Pré-Fechamento</span></a>
 <a onclick="mostrarPagina('validade',this)">📅 <span>Validade</span></a>
@@ -94,6 +145,16 @@ body.escuro .escala-tarefa.folga{background:#164634;color:#a7f3d0}
 </aside>
 
 <main id="conteudo">
+<div id="pag-inicio" class="pagina">
+<header><div><h2>📊 Visão Geral</h2><p>Resumo dinâmico da operação</p></div><div class="relogio"></div></header>
+<div class="dashboard-grid">
+<div class="dashboard-card"><div class="rotulo">📉 Produtos registrados em desperdício</div><div class="numero" id="dashDesperdicio">0</div></div>
+<div class="dashboard-card"><div class="rotulo">🍔 Registros de breaks</div><div class="numero" id="dashBreaks">0</div></div>
+<div class="dashboard-card"><div class="rotulo">👥 Funcionários nas escalas</div><div class="numero" id="dashFuncionarios">0</div></div>
+<div class="dashboard-card"><div class="rotulo">🔔 Status da sincronização</div><div class="numero" id="dashSync" style="font-size:20px">Conectando…</div></div>
+</div>
+<div class="tabela"><h2>⚡ Ações rápidas</h2><div class="atalhos"><button onclick="mostrarPagina('fechamento',document.querySelector('.menu a[onclick*=\'fechamento\']'))">📋 Escala de fechamento</button><button onclick="mostrarPagina('pre-fechamento',document.querySelector('.menu a[onclick*=\'pre-fechamento\']'))">🔧 Pré-fechamento</button><button onclick="mostrarPagina('desperdicio',document.querySelector('.menu a[onclick*=\'desperdicio\']'))">➕ Registrar desperdício</button><button onclick="mostrarPagina('breaks',document.querySelector('.menu a[onclick*=\'breaks\']'))">🍔 Controle de breaks</button><button onclick="mostrarPagina('validade',document.querySelector('.menu a[onclick*=\'validade\']'))">📅 Consultar validade</button></div><p>Os indicadores são atualizados conforme os dados sincronizados pelo sistema.</p></div>
+</div>
 <div id="pag-fechamento" class="pagina ativa">
 <header><div><h2>📋 Escala de Fechamento</h2><p>Escala de hoje</p></div><div class="relogio"></div></header>
 <div class="aviso-importante">
@@ -182,7 +243,8 @@ Todos devem conferir suas funções antes de iniciar o turno.</textarea><button 
 const firebaseConfig={apiKey:"AIzaSyCPfk6RUVWYZ8vQ80j-HSPrIK42yzwIA-Nk",authDomain:"bk-escala.firebaseapp.com",databaseURL:"https://bk-escala-default-rtdb.firebaseio.com",projectId:"bk-escala",storageBucket:"bk-escala.firebasestorage.app",messagingSenderId:"191531981744",appId:"1:191531981744:web:9f87cc5ae24bfa1e3c31475"};
 firebase.initializeApp(firebaseConfig);
 const db=firebase.database();
-const DESPERDICIO_REF=db.ref("desperdicio"),BREAKS_REF=db.ref("breaks"),ESCALA_FECHAMENTO_REF=db.ref("escala_fechamento"),ESCALA_PRE_REF=db.ref("escala_pre_fechamento"),EQUIPE_FECHAMENTO_REF=db.ref("equipe_fechamento"),EQUIPE_PRE_REF=db.ref("equipe_pre_fechamento"),AVISO_REF=db.ref("aviso_geral"),AVISO_PRE_REF=db.ref("aviso_pre_fechamento"),FOTOS_EQUIPE_REF=db.ref("fotos_equipe");
+const FOTOS_FUNC_REF=db.ref("fotos_funcionarios");
+const DESPERDICIO_REF=db.ref("desperdicio"),BREAKS_REF=db.ref("breaks"),ESCALA_FECHAMENTO_REF=db.ref("escala_fechamento"),ESCALA_PRE_REF=db.ref("escala_pre_fechamento"),EQUIPE_FECHAMENTO_REF=db.ref("equipe_fechamento"),EQUIPE_PRE_REF=db.ref("equipe_pre_fechamento"),AVISO_REF=db.ref("aviso_geral"),AVISO_PRE_REF=db.ref("aviso_pre_fechamento");
 const SENHA_EDICAO="292722";
 let podeEditarFechamento=false,podeEditarPre=false,escalaFechamentoAtual=[],escalaPreAtual=[];
 let funcionariosFechamento=["Daniel","Mariana","Julyan","Thuanney"],funcionariosPre=["Gabriel","Amanda","Dandara","Luísa","Júlia"];
@@ -211,7 +273,7 @@ function toggleMenu(){document.getElementById("sidebar").classList.toggle("minim
 function alternarMenuCelular(){document.querySelector(".menu").classList.toggle("fechado")}
 function alternarTema(){document.body.classList.toggle("escuro");localStorage.setItem("tema",document.body.classList.contains("escuro")?"escuro":"claro")}
 if(localStorage.getItem("tema")==="escuro")document.body.classList.add("escuro");
-function mostrarPagina(id,link){document.querySelectorAll(".pagina").forEach(p=>p.classList.remove("ativa"));document.querySelectorAll(".menu a").forEach(a=>a.classList.remove("ativo"));document.getElementById("pag-"+id).classList.add("ativa");if(link)link.classList.add("ativo")}
+function mostrarPagina(id,link){document.querySelectorAll(".pagina").forEach(p=>p.classList.remove("ativa"));document.querySelectorAll(".menu a").forEach(a=>a.classList.remove("ativo"));const pagina=document.getElementById("pag-"+id);if(pagina)pagina.classList.add("ativa");if(link)link.classList.add("ativo");if(id==="inicio")atualizarDashboard();if(window.innerWidth<=768)document.querySelector(".menu")?.classList.add("fechado")}
 function atualizarRelogio(){const h=new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit",second:"2-digit"});document.querySelectorAll(".relogio").forEach(x=>x.textContent=h)}atualizarRelogio();setInterval(atualizarRelogio,1000);
 
 function alternarFormAviso(){document.getElementById("formAvisoContainer").classList.toggle("visivel")}
@@ -225,18 +287,25 @@ AVISO_PRE_REF.on("value",s=>{const d=s.val();if(d?.mensagem){document.getElement
 function abrirEdicaoFech(){document.getElementById("painelEdicaoFech").classList.toggle("visivel")}
 function abrirEdicaoPre(){document.getElementById("painelEdicaoPre").classList.toggle("visivel")}
 
+
+const fotosFuncionarios={};
+function chaveFotoFuncionario(nome){return btoa(unescape(encodeURIComponent(String(nome||"")))).replace(/[.#$\[\]\/]/g,"_")}
+function selecionarFotoFuncionario(tipo,nome){
+ if(tipo==="fechamento"&&!podeEditarFechamento||tipo==="pre"&&!podeEditarPre){alert("🔒 Libere a edição da escala antes de alterar fotos.");return}
+ const input=document.getElementById("fotoFuncionarioInput");input.dataset.tipo=tipo;input.dataset.nome=nome;input.value="";input.click();
+}
+function comprimirFoto(file){return new Promise((resolve,reject)=>{if(!file.type.startsWith("image/"))return reject(new Error("Selecione um arquivo de imagem."));const reader=new FileReader();reader.onerror=()=>reject(new Error("Não foi possível ler a imagem."));reader.onload=()=>{const img=new Image();img.onerror=()=>reject(new Error("Imagem inválida."));img.onload=()=>{const max=360,ratio=Math.min(1,max/Math.max(img.width,img.height)),canvas=document.createElement("canvas");canvas.width=Math.max(1,Math.round(img.width*ratio));canvas.height=Math.max(1,Math.round(img.height*ratio));canvas.getContext("2d").drawImage(img,0,0,canvas.width,canvas.height);resolve(canvas.toDataURL("image/jpeg",.72))};img.src=reader.result};reader.readAsDataURL(file)})}
+document.addEventListener("DOMContentLoaded",()=>{const input=document.createElement("input");input.type="file";input.accept="image/*";input.id="fotoFuncionarioInput";input.hidden=true;document.body.appendChild(input);input.addEventListener("change",async()=>{const file=input.files?.[0];if(!file)return;try{const data=await comprimirFoto(file);if(data.length>90000){alert("A foto ficou muito grande mesmo após a compressão. Escolha uma imagem menor.");return}const nome=input.dataset.nome;await FOTOS_FUNC_REF.child(chaveFotoFuncionario(nome)).set({nome,data,atualizadoEm:new Date().toISOString()});toastBK("Foto de "+nome+" atualizada!");renderizarEscalaFechamento();renderizarEscalaPre()}catch(e){alert("Erro ao salvar foto: "+e.message)}})});
+FOTOS_FUNC_REF.on("value",snap=>{const dados=snap.val()||{};Object.keys(fotosFuncionarios).forEach(k=>delete fotosFuncionarios[k]);Object.entries(dados).forEach(([k,v])=>{if(v?.data)fotosFuncionarios[k]=v.data});if(typeof renderizarEscalaFechamento==="function")renderizarEscalaFechamento();if(typeof renderizarEscalaPre==="function")renderizarEscalaPre()});
+function toastBK(msg){let t=document.getElementById("toastBK");if(!t){t=document.createElement("div");t.id="toastBK";t.className="toast-bk";document.body.appendChild(t)}t.textContent=msg;t.style.display="block";clearTimeout(window.toastBKTimer);window.toastBKTimer=setTimeout(()=>t.style.display="none",2800)}
+function atualizarDashboard(){const d=document.getElementById("dashDesperdicio"),b=document.getElementById("dashBreaks"),f=document.getElementById("dashFuncionarios"),sy=document.getElementById("dashSync");if(d)d.textContent=document.querySelectorAll("#corpoDesp tr").length;if(b)b.textContent=document.querySelectorAll("#corpoBreaks tr").length;if(f)f.textContent=(funcionariosFechamento?.length||0)+(funcionariosPre?.length||0);if(sy)sy.textContent=navigator.onLine?"Online":"Offline"}
+window.addEventListener("online",()=>{const e=document.getElementById("statusSinc");if(e){e.textContent="✅ Conexão disponível";e.className="status-sinc conectado"}atualizarDashboard()});window.addEventListener("offline",()=>{const e=document.getElementById("statusSinc");if(e){e.textContent="⚠️ Sem conexão";e.className="status-sinc desconectado"}atualizarDashboard()});
+
 const OPCOES_FECH=["—","— FOLGA —","Broiler","Coifa","Mesa","Louça","Broiler + Mesa","Mesa + Broiler","Mesa + Coifa","Louça + Mesa","Mesa + Louça","Louça + Broiler","Coifa + Mesa","Louça + Coifa"];
 const OPCOES_PRE=["—","Folga","Freezer","Batateira","Freezer Frango","Freezer Carne","Lixeiras","Freezer Carne ■ Lixeiras","Freezer Frango ■ Lixeiras","Lixeiras ■ Freezer Frango","Lixeiras ■ Freezer Carne"];
 function campoEscala(valor,atributos,opcoes){const atual=String(valor||"—");const lista=[...opcoes];if(!lista.includes(atual))lista.push(atual);return `<select ${atributos}>${lista.map(o=>`<option value="${esc(o)}" ${o===atual?"selected":""}>${esc(o)}</option>`).join("")}</select>`}
 function renderizarCabecalhoFech(){/* Layout atual usa cartões, não cabeçalho de tabela. */}
 function renderizarCabecalhoPre(){/* Layout atual usa cartões, não cabeçalho de tabela. */}
-
-// Fotos da equipe sincronizadas pelo Firebase Realtime Database para todos os dispositivos.
-let fotosEquipeCompartilhadas={};
-function carregarFotosEquipe(){return fotosEquipeCompartilhadas||{}}
-FOTOS_EQUIPE_REF.on("value",snapshot=>{fotosEquipeCompartilhadas=snapshot.val()||{};renderizarEscalaFechamento();renderizarEscalaPre()});
-function avatarFuncionario(nome){const foto=carregarFotosEquipe()[nome],iniciais=esc(nome.trim().split(/\s+/).map(x=>x[0]).join("").slice(0,2).toUpperCase());return `<div class="escala-identidade"><div class="escala-avatar">${foto?`<img src="${foto}" alt="Foto de ${esc(nome)}">`:iniciais}</div><button type="button" class="foto-editar" onclick="escolherFotoFuncionario(${JSON.stringify(nome).replace(/</g,"\\u003c")})">📷 ${foto?"Trocar foto":"Adicionar foto"}</button></div>`}
-function escolherFotoFuncionario(nome){let input=document.getElementById("seletorFotoEquipe");if(!input){input=document.createElement("input");input.type="file";input.id="seletorFotoEquipe";input.accept="image/*";input.style.display="none";document.body.appendChild(input)}input.onchange=()=>{const arquivo=input.files&&input.files[0];if(!arquivo)return;if(!arquivo.type.startsWith("image/")){alert("Escolha um arquivo de imagem.");return}const leitor=new FileReader();leitor.onload=()=>{const img=new Image();img.onload=()=>{const canvas=document.createElement("canvas"),max=320,escala=Math.min(1,max/Math.max(img.width,img.height));canvas.width=Math.max(1,Math.round(img.width*escala));canvas.height=Math.max(1,Math.round(img.height*escala));canvas.getContext("2d").drawImage(img,0,0,canvas.width,canvas.height);const foto=canvas.toDataURL("image/jpeg",.72);FOTOS_EQUIPE_REF.child(nome).set(foto).then(()=>alert("✅ Foto salva e sincronizada para toda a equipe!")).catch(e=>alert("Não foi possível salvar a foto no Firebase. Verifique a conexão e as regras do banco. Detalhe: "+e.message))};img.onerror=()=>alert("Não foi possível abrir essa imagem.");img.src=leitor.result};leitor.readAsDataURL(arquivo);input.value=""};input.click()}
 
 function renderizarEscalaFechamento(){
  const i=hojeIndice(),d=escalaFechamentoAtual[i]||{};
@@ -245,7 +314,7 @@ function renderizarEscalaFechamento(){
  let html=`<div class="escala-topo"><div class="dia-label">Escala de hoje</div><h3>${diasSemana[i]}</h3><div class="data-label">${dataHoje()}</div><div class="folga-hoje">🌴 Folga: ${esc(folga)}</div></div>`;
  if(podeEditarFechamento){html+=`<div class="escala-folga-edit"><strong>🌴 Folga do dia</strong><br><input data-tipo="folga" list="opcoesFolga" value="${esc(folga)}" aria-label="Folga" style="margin-top:7px;width:100%;max-width:100%;min-height:42px;padding:8px;border:1px solid #ff9a45;border-radius:9px;background:var(--card);color:var(--texto)"></div>`}
  html+='<div class="escala-lista">';
- funcionariosFechamento.forEach((n,idx)=>{const valor=String(d[n]||"—"),folgaPessoa=valor.toLowerCase().includes('folga');const campo=podeEditarFechamento?`<select data-func="${esc(n)}" aria-label="Função de ${esc(n)}">${[...new Set([...OPCOES_FECH,valor])].map(o=>`<option value="${esc(o)}" ${o===valor?'selected':''}>${esc(o)}</option>`).join('')}</select>`:`<span class="escala-tarefa ${folgaPessoa?'folga':''}">${esc(valor)}</span>`;html+=`<div class="escala-item">${avatarFuncionario(n)}<div class="escala-pessoa">${esc(n)}</div>${campo}</div>`});
+ funcionariosFechamento.forEach((n,idx)=>{const valor=String(d[n]||"—"),folgaPessoa=valor.toLowerCase().includes('folga');const campo=podeEditarFechamento?`<select data-func="${esc(n)}" aria-label="Função de ${esc(n)}">${[...new Set([...OPCOES_FECH,valor])].map(o=>`<option value="${esc(o)}" ${o===valor?'selected':''}>${esc(o)}</option>`).join('')}</select>`:`<span class="escala-tarefa ${folgaPessoa?'folga':''}">${esc(valor)}</span>`;const foto=fotosFuncionarios[chaveFotoFuncionario(n)];const avatar=foto?`<div class="escala-avatar"><img src="${foto}" alt="Foto de ${esc(n)}"></div>`:`<div class="escala-avatar">${esc(n.trim().split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase())}</div>`;const botaoFoto=podeEditarFechamento?`<button class="foto-func-btn" onclick="selecionarFotoFuncionario('fechamento','${esc(n)}')">📷 Foto</button>`:'';html+=`<div class="escala-item">${avatar}<div class="escala-pessoa">${esc(n)}</div>${campo}${botaoFoto}</div>`});
  html+='</div>';corpo.innerHTML=html;
  if(podeEditarFechamento)corpo.querySelectorAll('input,select').forEach(inp=>inp.addEventListener('change',()=>{if(inp.dataset.tipo==='folga')d.folga=inp.value;else d[inp.dataset.func]=inp.value;escalaFechamentoAtual[i]=d;renderizarEscalaFechamento()}));
 }
@@ -260,7 +329,7 @@ EQUIPE_FECHAMENTO_REF.on("value",s=>{funcionariosFechamento=s.val()||["Daniel","
 function renderizarEscalaPre(){
  const i=hojeIndice(),d=escalaPreAtual[i]||{},corpo=document.getElementById("corpoPre");
  let html=`<div class="escala-topo"><div class="dia-label">Escala de hoje</div><h3>${diasSemana[i]}</h3><div class="data-label">${dataHoje()}</div><div class="folga-hoje">🍔 Pré-fechamento do dia</div></div><div class="escala-lista">`;
- funcionariosPre.forEach((n,idx)=>{const valor=String(d[n]||"—"),folgaPessoa=valor.toLowerCase().includes('folga');const campo=podeEditarPre?`<select data-func="${esc(n)}" aria-label="Função de ${esc(n)}">${[...new Set([...OPCOES_PRE,valor])].map(o=>`<option value="${esc(o)}" ${o===valor?'selected':''}>${esc(o)}</option>`).join('')}</select>`:`<span class="escala-tarefa ${folgaPessoa?'folga':''}">${esc(valor)}</span>`;html+=`<div class="escala-item">${avatarFuncionario(n)}<div class="escala-pessoa">${esc(n)}</div>${campo}</div>`});
+ funcionariosPre.forEach((n,idx)=>{const valor=String(d[n]||"—"),folgaPessoa=valor.toLowerCase().includes('folga');const campo=podeEditarPre?`<select data-func="${esc(n)}" aria-label="Função de ${esc(n)}">${[...new Set([...OPCOES_PRE,valor])].map(o=>`<option value="${esc(o)}" ${o===valor?'selected':''}>${esc(o)}</option>`).join('')}</select>`:`<span class="escala-tarefa ${folgaPessoa?'folga':''}">${esc(valor)}</span>`;const foto=fotosFuncionarios[chaveFotoFuncionario(n)];const avatar=foto?`<div class="escala-avatar"><img src="${foto}" alt="Foto de ${esc(n)}"></div>`:`<div class="escala-avatar">${esc(n.trim().split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase())}</div>`;const botaoFoto=podeEditarPre?`<button class="foto-func-btn" onclick="selecionarFotoFuncionario('pre','${esc(n)}')">📷 Foto</button>`:'';html+=`<div class="escala-item">${avatar}<div class="escala-pessoa">${esc(n)}</div>${campo}${botaoFoto}</div>`});
  html+='</div>';corpo.innerHTML=html;
  if(podeEditarPre)corpo.querySelectorAll('select').forEach(inp=>inp.addEventListener('change',()=>{d[inp.dataset.func]=inp.value;escalaPreAtual[i]=d;renderizarEscalaPre()}));
 }
@@ -296,10 +365,14 @@ function alterarQuantidadeDesperdicio(id,delta){
   const dados=s.val()||{},base=dados[id];if(!base)return;
   const unidade=base.unidade||"un",chave=normalizarNomeProduto(base.produto);
   const encontrados=Object.entries(dados).filter(([,x])=>x&&normalizarNomeProduto(x.produto)===chave&&(x.unidade||"un")===unidade);
-  const total=encontrados.reduce((a,[,x])=>a+(parseInt(x.quantidade,10)||0),0)+delta,up={};
-  if(total<=0){encontrados.forEach(([x])=>up[x]=null);return DESPERDICIO_REF.update(up)}
-  const [idp]=encontrados;up[idp]={produto:base.produto,quantidade:total,unidade,horario:new Date().toLocaleString("pt-BR")};encontrados.slice(1).forEach(([x])=>up[x]=null);return DESPERDICIO_REF.update(up)
- }).catch(e=>alert("❌ "+e.message))
+  const totalAtual=encontrados.reduce((a,[,x])=>a+(parseInt(x.quantidade,10)||0),0),total=totalAtual+delta;
+  if(total<0)return;
+  if(total===0){const apagar={};encontrados.forEach(([itemId])=>apagar[itemId]=null);return DESPERDICIO_REF.update(apagar)}
+  const idPrincipal=encontrados[0][0],itemPrincipal=encontrados[0][1],up={};
+  up[idPrincipal]={...itemPrincipal,produto:itemPrincipal.produto||base.produto,quantidade:total,unidade,horario:new Date().toLocaleString("pt-BR")};
+  encontrados.slice(1).forEach(([itemId])=>up[itemId]=null);
+  return DESPERDICIO_REF.update(up);
+ }).catch(e=>alert("❌ Erro ao alterar quantidade: "+e.message))
 }
 function excluirDesperdicio(id){
  if(!confirm("🗑️ Excluir este item?"))return;
@@ -314,11 +387,11 @@ DESPERDICIO_REF.on("value",s=>{
   const tr=document.createElement("tr"),s=x.unidade==="g"?"g":"un";
   tr.innerHTML=`<td>${esc(x.horario)}</td><td class="produto-registro">${esc(x.produto)}</td><td><span class="qtd-valor">${x.quantidade} ${s}</span></td><td><div class="controle-qtd"><button class="btn-qtd menos" onclick="alterarQuantidadeDesperdicio('${x.id}',-1)">−</button><button class="btn-qtd mais" onclick="alterarQuantidadeDesperdicio('${x.id}',1)">+</button></div></td><td><button class="vermelho" onclick="excluirDesperdicio('${x.id}')">🗑️</button></td>`;corpo.appendChild(tr)
  });
- let r="<strong>Totais:</strong> ";if(un)r+=`${un} unidades`;if(un&&g)r+=" • ";if(g)r+=`${g} g`;if(!un&&!g)r+="0 unidades";r+=` • <strong>${Object.keys(grupos).length}</strong> registro(s)`;document.getElementById("resumo").innerHTML=r
+ let r="<strong>Totais:</strong> ";if(un)r+=`${un} unidades`;if(un&&g)r+=" • ";if(g)r+=`${g} g`;if(!un&&!g)r+="0 unidades";r+=` • <strong>${Object.keys(grupos).length}</strong> registro(s)`;document.getElementById("resumo").innerHTML=r;atualizarDashboard()
 });
 
 function adicionarBreak(turno){const cap=turno[0].toUpperCase()+turno.slice(1),nome=document.getElementById("nomeFunc"+cap).value.trim(),itens=document.getElementById("itens"+cap).value.trim(),gerente=document.getElementById("gerenteTurno").value.trim()||"Não informado";if(!nome||!itens)return alert("⚠️ Preencha nome e itens!");BREAKS_REF.push({turno:turno==="manha"?"☀️ Manhã":"🌙 Noite",nome,itens,gerente,horarioCompleto:new Date().toLocaleString("pt-BR")}).then(()=>{document.getElementById("nomeFunc"+cap).value="";document.getElementById("itens"+cap).value="";alert("✅ Break registrado!")})}
-BREAKS_REF.on("value",s=>{const d=s.val()||{},c=document.getElementById("corpoBreaks");c.innerHTML="";let n=0;Object.entries(d).forEach(([id,x])=>{n++;const tr=document.createElement("tr");tr.innerHTML=`<td>${esc(x.turno)}</td><td>${esc(x.nome)}</td><td>${esc(x.itens)}</td><td>${esc(x.gerente)}</td><td>${esc(x.horarioCompleto)}</td><td><button class="vermelho" onclick="excluirBreak('${id}')">🗑️</button></td>`;c.appendChild(tr)});document.getElementById("resumoBreaks").innerHTML=`<strong>Total:</strong> ${n} registros`})
+BREAKS_REF.on("value",s=>{const d=s.val()||{},c=document.getElementById("corpoBreaks");c.innerHTML="";let n=0;Object.entries(d).forEach(([id,x])=>{n++;const tr=document.createElement("tr");tr.innerHTML=`<td>${esc(x.turno)}</td><td>${esc(x.nome)}</td><td>${esc(x.itens)}</td><td>${esc(x.gerente)}</td><td>${esc(x.horarioCompleto)}</td><td><button class="vermelho" onclick="excluirBreak('${id}')">🗑️</button></td>`;c.appendChild(tr)});document.getElementById("resumoBreaks").innerHTML=`<strong>Total:</strong> ${n} registros`;atualizarDashboard()})
 function excluirBreak(id){if(confirm("🗑️ Excluir este registro?"))BREAKS_REF.child(id).remove()}
 function limparBreaks(){if(confirm("⚠️ Zerar TODOS os registros?"))BREAKS_REF.remove()}
 
@@ -327,6 +400,82 @@ function calcularFolga(){const e=document.getElementById("funcionario").value;if
 
 document.getElementById("dataBreak").value=new Date().toISOString().split("T")[0];
 atualizarCampoQuantidade();
+setInterval(atualizarDashboard,5000);
+setTimeout(atualizarDashboard,1000);
+
+/* Interações BK Escala 2.0 */
+let bkNaoLidas = 0;
+const bkAvisos = [];
+function bkToast(mensagem, erro=false){
+ const area=document.getElementById("bkToastArea"); if(!area)return;
+ const el=document.createElement("div");el.className="bk-toast"+(erro?" erro":"");el.textContent=mensagem;area.appendChild(el);
+ setTimeout(()=>{el.style.opacity="0";el.style.transform="translateY(8px)";setTimeout(()=>el.remove(),250)},3600);
+}
+function bkIr(id){
+ const link=[...document.querySelectorAll(".menu a")].find(a=>(a.getAttribute("onclick")||"").includes("'"+id+"'"));
+ if(typeof mostrarPagina==="function")mostrarPagina(id,link);
+ document.getElementById("bkFabMenu")?.classList.remove("aberto");
+ document.getElementById("bkFab").textContent="＋";
+}
+function bkToggleFab(){
+ const menu=document.getElementById("bkFabMenu"),fab=document.getElementById("bkFab");
+ menu.classList.toggle("aberto");fab.textContent=menu.classList.contains("aberto")?"×":"＋";
+}
+function bkToggleNotificacoes(){document.getElementById("bkNotifyPanel")?.classList.toggle("aberto")}
+function bkAdicionarAviso(titulo,descricao){
+ bkAvisos.unshift({titulo,descricao,lida:false,quando:new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})});
+ bkAvisos.splice(8);bkNaoLidas=bkAvisos.filter(a=>!a.lida).length;bkRenderAvisos();
+}
+function bkRenderAvisos(){
+ const badge=document.getElementById("bkBadge"),content=document.getElementById("bkNotifyContent");
+ if(badge)badge.textContent=String(bkNaoLidas);
+ if(content)content.innerHTML=bkAvisos.length?bkAvisos.map(a=>`<div class="bk-notify-item"><strong>${a.lida?"✓":"🔸"} ${esc(a.titulo)}</strong>${esc(a.descricao)}<div style="opacity:.65;margin-top:5px">${esc(a.quando)}</div></div>`).join(""):'<p style="padding:16px 0">Nenhum aviso novo no momento.</p>';
+}
+function bkMarcarLidas(){bkAvisos.forEach(a=>a.lida=true);bkNaoLidas=0;bkRenderAvisos();bkToast("Notificações marcadas como lidas.")}
+function bkAbrirBusca(){
+ let old=document.getElementById("bkBuscaOverlay");if(old){old.remove();return}
+ const ov=document.createElement("div");ov.id="bkBuscaOverlay";ov.style.cssText="position:fixed;inset:0;background:#0009;z-index:400;display:flex;align-items:flex-start;justify-content:center;padding:12vh 16px 20px";
+ ov.innerHTML=`<div style="width:min(620px,100%);background:var(--card);color:var(--texto);padding:22px;border-radius:18px;box-shadow:0 20px 60px #0005"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h3>🔎 Busca rápida</h3><button onclick="document.getElementById('bkBuscaOverlay').remove()" style="margin:0">Fechar</button></div><input id="bkBuscaInput" class="bk-busca" placeholder="Buscar uma seção ou ação..." autocomplete="off"><div id="bkBuscaResultados"></div></div>`;
+ ov.addEventListener("click",e=>{if(e.target===ov)ov.remove()});document.body.appendChild(ov);
+ const input=document.getElementById("bkBuscaInput"),results=document.getElementById("bkBuscaResultados");
+ const items=[["Visão Geral","inicio"],["Escala de Fechamento","fechamento"],["Escala de Pré-Fechamento","pre-fechamento"],["Validade","validade"],["Desperdício","desperdicio"],["Controle de Breaks","breaks"],["Utilidades","utilidades"],["Acesso Rápido","qrcode"]];
+ function render(){const q=input.value.trim().toLocaleLowerCase("pt-BR");results.innerHTML=items.filter(x=>x[0].toLocaleLowerCase("pt-BR").includes(q)).map(x=>`<button style="width:100%;text-align:left;margin:4px 0" onclick="bkIr('${x[1]}');document.getElementById('bkBuscaOverlay').remove()">${x[0]} →</button>`).join("")||"<p>Nenhuma seção encontrada.</p>"}
+ input.addEventListener("input",render);render();input.focus();
+}
+function bkAtualizarPendencias(){
+ const inicio=document.getElementById("pag-inicio");if(!inicio)return;
+ let box=document.getElementById("bkPendencias");if(!box){box=document.createElement("div");box.id="bkPendencias";box.className="bk-pendencias";const grid=inicio.querySelector(".dashboard-grid");if(grid)grid.insertAdjacentElement("afterend",box)}
+ const desperdicios=document.querySelectorAll("#corpoDesp tr").length,breaks=document.querySelectorAll("#corpoBreaks tr").length;
+ const pessoas=(window.funcionariosFechamento?.length||0)+(window.funcionariosPre?.length||0);
+ box.innerHTML=`<div class="bk-pendencia"><strong>📌 Atalhos do turno</strong><span>Use as ações rápidas para acessar os módulos sem navegar pelo menu.</span><div class="bk-progresso"><span style="width:${Math.min(100,desperdicios*10)}%"></span></div></div><div class="bk-pendencia"><strong>📉 Desperdício registrado</strong><span>${desperdicios} grupo(s) de produto(s) no registro atual.</span></div><div class="bk-pendencia"><strong>🍔 Breaks registrados</strong><span>${breaks} registro(s) disponíveis para consulta.</span></div><div class="bk-pendencia"><strong>👥 Equipe nas escalas</strong><span>${pessoas} posições de funcionários configuradas.</span></div>`;
+}
+document.addEventListener("online",()=>{bkToast("Conexão recuperada.");bkAdicionarAviso("Conexão recuperada","O navegador voltou a ficar online.")});
+document.addEventListener("offline",()=>{bkToast("Sem conexão com a internet. As alterações podem não sincronizar.",true);bkAdicionarAviso("Sem conexão","Verifique a internet antes de considerar os dados sincronizados.")});
+document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();bkAbrirBusca()}if(e.key==="Escape"){document.getElementById("bkBuscaOverlay")?.remove();document.getElementById("bkNotifyPanel")?.classList.remove("aberto")}});
+const bkObserver=new MutationObserver(()=>bkAtualizarPendencias());
+window.addEventListener("load",()=>{bkRenderAvisos();bkAtualizarPendencias();setTimeout(()=>bkAdicionarAviso("Bem-vindo ao BK Escala","Use a busca rápida ou o botão + para acessar as funções principais."),800);});
+setInterval(bkAtualizarPendencias,5000);
+
 </script>
+
+<div class="topbar-extra" aria-label="Ações gerais">
+  <button class="bk-icon-btn" onclick="bkToggleNotificacoes()" aria-label="Abrir notificações" title="Notificações">🔔<span class="bk-badge" id="bkBadge">0</span></button>
+  <button class="bk-icon-btn" onclick="bkAbrirBusca()" aria-label="Buscar no sistema" title="Buscar">🔎</button>
+</div>
+<section class="bk-notify-panel" id="bkNotifyPanel" aria-live="polite">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><h3>🔔 Central de avisos</h3><button onclick="bkToggleNotificacoes()" style="margin:0;padding:5px 9px">✕</button></div>
+  <div id="bkNotifyContent"></div>
+  <button class="sucesso" onclick="bkMarcarLidas()" style="width:100%">✓ Marcar como lidas</button>
+</section>
+<div class="bk-fab-menu" id="bkFabMenu">
+  <button onclick="bkIr('desperdicio')">📉 Registrar desperdício</button>
+  <button onclick="bkIr('fechamento')">📋 Escala de fechamento</button>
+  <button onclick="bkIr('pre-fechamento')">🔧 Pré-fechamento</button>
+  <button onclick="bkIr('breaks')">🍔 Controle de breaks</button>
+  <button onclick="bkIr('validade')">📅 Consultar validade</button>
+</div>
+<button class="bk-fab" id="bkFab" onclick="bkToggleFab()" aria-label="Ações rápidas" title="Ações rápidas">＋</button>
+<div class="bk-toast-area" id="bkToastArea" aria-live="polite"></div>
+
 </body>
 </html>
