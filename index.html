@@ -135,6 +135,40 @@ button:active{transform:scale(.97)}
 .escala-lista .foto-func-btn{padding:5px 7px}
 @media(max-width:768px){.escala-lista{gap:6px!important}.escala-lista .escala-item{gap:8px;padding:6px 8px;min-height:62px}.escala-lista .escala-avatar{width:50px;height:50px;flex-basis:50px}.escala-lista .escala-pessoa{font-size:12px}.escala-lista .escala-tarefa{max-width:45%;font-size:11px;padding:5px 6px}.escala-lista .escala-item select{max-width:45%;min-height:34px;font-size:11px}.escala-lista .foto-func-btn{font-size:10px;padding:4px 5px}}
 </style>
+
+<style id="bk-layout-cartoes-gradiente-b">
+/* BK Escala — Layout B: cartões verticais com gradiente */
+.escala-lista{
+  width:100%!important;max-width:1200px!important;margin:14px auto 0!important;
+  display:grid!important;grid-template-columns:repeat(auto-fit,minmax(155px,1fr))!important;
+  gap:14px!important;align-items:stretch;
+}
+.escala-lista .escala-item{
+  position:relative;min-width:0;min-height:0!important;padding:10px!important;gap:8px!important;
+  display:flex!important;flex-direction:column!important;align-items:stretch!important;
+  flex-wrap:nowrap!important;text-align:center;border:1px solid #ff8a3d!important;
+  border-radius:16px!important;color:#fff!important;
+  background:linear-gradient(160deg,#2b2b31 0%,#17171c 58%,#35180f 100%)!important;
+  box-shadow:0 6px 18px #0003,inset 0 1px #ffffff12!important;overflow:hidden;
+}
+.escala-lista .escala-item::before{content:"";position:absolute;inset:0 0 auto;height:4px;background:linear-gradient(90deg,#e52d27,#ff8a00);z-index:1}
+.escala-lista .escala-item:hover{transform:translateY(-3px);box-shadow:0 10px 24px #ff6a0025!important;border-color:#ffb36b!important}
+.escala-lista .escala-avatar{
+  width:100%!important;height:clamp(135px,15vw,190px)!important;flex:0 0 auto!important;
+  border-radius:11px!important;border:0!important;overflow:hidden!important;margin-top:2px;
+  background:linear-gradient(135deg,#e52d27,#ff8a00)!important;color:white!important;
+}
+.escala-lista .escala-avatar img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 25%!important;display:block}
+.escala-lista .escala-pessoa{width:100%;font-size:14px!important;font-weight:800!important;line-height:1.25!important;color:#fff!important;overflow-wrap:anywhere}
+.escala-lista .escala-tarefa{display:block;max-width:100%!important;width:100%;box-sizing:border-box;margin:0!important;padding:7px 8px!important;border:1px solid #ff8a3d!important;border-radius:9px!important;background:#ff7a001c!important;color:#ffb36b!important;line-height:1.25}
+.escala-lista .escala-item select,.escala-lista .escala-item input{width:100%!important;max-width:100%!important;min-height:38px!important;box-sizing:border-box;background:#24242a!important;color:#fff!important;border-color:#ff8a3d!important}
+.escala-lista .foto-func-btn{width:100%;margin:0!important;padding:8px!important;background:linear-gradient(90deg,#e52d27,#ff8a00)!important;color:#fff!important;border:0!important;border-radius:9px!important}
+.escala-lista .escala-item .folga{color:#a8e6a3!important;background:#16331d!important;border-color:#3d8a45!important}
+@media(max-width:650px){.escala-lista{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}.escala-lista .escala-avatar{height:clamp(125px,42vw,175px)!important}.escala-lista .escala-item{padding:8px!important}}
+@media(min-width:651px) and (max-width:900px){.escala-lista{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(prefers-reduced-motion:reduce){.escala-lista .escala-item{transition:none!important}}
+</style>
+
 </head>
 <body>
 <aside id="sidebar">
