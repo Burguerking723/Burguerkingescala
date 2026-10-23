@@ -134,6 +134,17 @@ button:active{transform:scale(.97)}
 .escala-lista .escala-item select{min-height:36px;padding:5px 8px}
 .escala-lista .foto-func-btn{padding:5px 7px}
 @media(max-width:768px){.escala-lista{gap:6px!important}.escala-lista .escala-item{gap:8px;padding:6px 8px;min-height:62px}.escala-lista .escala-avatar{width:50px;height:50px;flex-basis:50px}.escala-lista .escala-pessoa{font-size:12px}.escala-lista .escala-tarefa{max-width:45%;font-size:11px;padding:5px 6px}.escala-lista .escala-item select{max-width:45%;min-height:34px;font-size:11px}.escala-lista .foto-func-btn{font-size:10px;padding:4px 5px}}
+
+
+/* Tarefas especiais de limpeza por dia — pré-fechamento */
+.pre-diaria-lista{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.pre-diaria-card{border:1px solid var(--borda);border-radius:14px;padding:14px;background:var(--form);min-width:0}
+.pre-diaria-card h3{font-size:15px;color:#d62300;margin-bottom:8px}
+.pre-diaria-card p{font-size:13px;line-height:1.5;overflow-wrap:anywhere}
+.pre-diaria-card .pre-diaria-edit{display:grid;gap:8px;margin-top:10px}
+.pre-diaria-card select{width:100%;min-width:0;padding:10px;border:1px solid var(--borda);border-radius:9px;background:var(--card);color:var(--texto)}
+.pre-diaria-vazio{padding:14px;border:1px dashed var(--borda);border-radius:12px;text-align:center;opacity:.75}
+@media(max-width:560px){.pre-diaria-lista{grid-template-columns:1fr}}
 </style>
 
 <style id="bk-layout-cartoes-gradiente-b">
@@ -541,11 +552,25 @@ Todos devem conferir suas funções antes de iniciar o turno.</textarea><button 
 <input type="password" id="senhaPre" placeholder="Senha">
 <button class="azul" onclick="liberarEdicaoPre()">Entrar</button>
 <span class="status-edicao bloqueado" id="statusEditPre">🔒 Bloqueado</span>
-<div id="botoesSalvarPre" style="display:none"><button class="sucesso" onclick="salvarEscalaPre()">💾 Salvar</button><button onclick="recarregarEscalaPre()">🔄 Restaurar</button><button class="azul" onclick="adicionarFuncionarioPre()">➕ Funcionário</button><button class="azul" onclick="adicionarTarefaPre()">➕ Nova tarefa</button><button onclick="bloquearEdicaoPre()">🔒 Bloquear</button></div>
+<div id="botoesSalvarPre" style="display:none"><button class="sucesso" onclick="salvarEscalaPre()">💾 Salvar</button><button onclick="recarregarEscalaPre()">🔄 Restaurar</button><button class="azul" onclick="adicionarFuncionarioPre()">➕ Funcionário</button><button class="azul" onclick="renomearFuncionarioPre()">✏️ Alterar funcionário</button><button class="azul" onclick="adicionarTarefaPre()">➕ Nova tarefa</button><button onclick="bloquearEdicaoPre()">🔒 Bloquear</button></div>
 </div>
 <div id="corpoPre" class="escala-render"></div>
 <p style="margin-top:12px;font-size:13px;color:#777">📌 A escala mostra somente o dia atual. A edição fica escondida no ⚙️.</p>
 <button onclick="window.print()">🖨 Imprimir</button>
+</div>
+
+<div class="tabela" id="painelTarefasDiariasPre">
+  <h2>🧽 Tarefa específica de limpeza por dia</h2>
+  <p style="margin:-8px 0 16px;line-height:1.6">Defina uma tarefa especial para cada dia da semana e escolha o funcionário responsável. As atribuições ficam separadas da escala normal de pré-fechamento.</p>
+  <div id="listaTarefasDiariasPre"></div>
+  <div id="controlesTarefasDiariasPre" style="display:none;margin-top:14px">
+    <button class="sucesso" onclick="salvarTarefasDiariasPre()">💾 Salvar atribuições por dia</button>
+    <button class="azul" onclick="adicionarTarefaPre()">➕ Criar tarefa</button>
+    <button class="azul" onclick="adicionarFuncionarioPre()">➕ Adicionar funcionário</button>
+    <button class="azul" onclick="renomearFuncionarioPre()">✏️ Alterar nome de funcionário</button>
+    <p style="font-size:12px;opacity:.75;margin-top:8px">A edição e as alterações de funcionários/tarefas exigem desbloqueio pela senha na área acima.</p>
+  </div>
+  <p id="statusTarefasDiariasPre" style="font-size:12px;opacity:.75;margin-top:12px">🔒 Para alterar as atribuições, desbloqueie a edição na engrenagem da escala acima.</p>
 </div>
 </div>
 
@@ -621,7 +646,7 @@ const firebaseConfig={apiKey:"AIzaSyCPfk6RUVWYZ8vQ80j-HSPrIK42yzwIA-Nk",authDoma
 firebase.initializeApp(firebaseConfig);
 const db=firebase.database();
 const FOTOS_FUNC_REF=db.ref("fotos_funcionarios"),BK_AUDIT_REF=db.ref("historico_operacional_bk"),BK_WASTE_AI_REF=db.ref("historico_analise_foto_desperdicio");
-const DESPERDICIO_REF=db.ref("desperdicio"),BREAKS_REF=db.ref("breaks"),ESCALA_FECHAMENTO_REF=db.ref("escala_fechamento"),ESCALA_PRE_REF=db.ref("escala_pre_fechamento"),EQUIPE_FECHAMENTO_REF=db.ref("equipe_fechamento"),EQUIPE_PRE_REF=db.ref("equipe_pre_fechamento"),AVISO_REF=db.ref("aviso_geral"),AVISO_PRE_REF=db.ref("aviso_pre_fechamento"),TAREFAS_PRE_REF=db.ref("tarefas_pre_fechamento");
+const DESPERDICIO_REF=db.ref("desperdicio"),BREAKS_REF=db.ref("breaks"),ESCALA_FECHAMENTO_REF=db.ref("escala_fechamento"),ESCALA_PRE_REF=db.ref("escala_pre_fechamento"),EQUIPE_FECHAMENTO_REF=db.ref("equipe_fechamento"),EQUIPE_PRE_REF=db.ref("equipe_pre_fechamento"),AVISO_REF=db.ref("aviso_geral"),AVISO_PRE_REF=db.ref("aviso_pre_fechamento"),TAREFAS_PRE_REF=db.ref("tarefas_pre_fechamento"),TAREFAS_DIARIAS_PRE_REF=db.ref("tarefas_diarias_pre_fechamento");
 const SENHA_EDICAO="292722";
 let podeEditarFechamento=false,podeEditarPre=false,escalaFechamentoAtual=[],escalaPreAtual=[];
 let funcionariosFechamento=["Daniel","Mariana","Julyan","Thuanney"],funcionariosPre=["Gabriel","Amanda","Dandara","Luísa","Júlia"];
@@ -711,11 +736,38 @@ function renderizarEscalaPre(){
  html+='</div>';corpo.innerHTML=html;
  if(podeEditarPre)corpo.querySelectorAll('select').forEach(inp=>inp.addEventListener('change',()=>{d[inp.dataset.func]=inp.value;escalaPreAtual[i]=d;renderizarEscalaPre()}));
 }
-function liberarEdicaoPre(){if(document.getElementById("senhaPre").value===SENHA_EDICAO){podeEditarPre=true;document.getElementById("statusEditPre").textContent="🔓 Liberado";document.getElementById("statusEditPre").className="status-edicao liberado";document.getElementById("botoesSalvarPre").style.display="block";renderizarEscalaPre()}else alert("❌ Senha incorreta!")}
+function liberarEdicaoPre(){if(document.getElementById("senhaPre").value===SENHA_EDICAO){podeEditarPre=true;document.getElementById("statusEditPre").textContent="🔓 Liberado";document.getElementById("statusEditPre").className="status-edicao liberado";document.getElementById("botoesSalvarPre").style.display="block";renderizarEscalaPre();renderizarTarefasDiariasPre()}else alert("❌ Senha incorreta!")}
 function bloquearEdicaoPre(){podeEditarPre=false;document.getElementById("statusEditPre").textContent="🔒 Bloqueado";document.getElementById("statusEditPre").className="status-edicao bloqueado";document.getElementById("botoesSalvarPre").style.display="none";document.getElementById("senhaPre").value="";renderizarEscalaPre()}
 function salvarEscalaPre(){ESCALA_PRE_REF.set(escalaPreAtual).then(()=>{bkRegistrarAuditoria("Escala de pré-fechamento salva",`Escala salva em ${diasSemana[hojeIndice()]}`);bkToast("Escala de pré-fechamento sincronizada.");alert("✅ Escala salva e sincronizada!")}).catch(e=>alert("❌ "+e.message))}
 function recarregarEscalaPre(){if(confirm("🔄 Restaurar a escala salva?"))ESCALA_PRE_REF.once("value").then(s=>{escalaPreAtual=Array.isArray(s.val())&&s.val().length?s.val():JSON.parse(JSON.stringify(ESCALA_PRE_PADRAO));renderizarEscalaPre()})}
-function adicionarFuncionarioPre(){const n=prompt("Nome do funcionário:");if(n?.trim()){const nome=n.trim();if(funcionariosPre.includes(nome))return alert("Esse funcionário já existe.");funcionariosPre.push(nome);escalaPreAtual.forEach(d=>{if(d&&!d[nome])d[nome]=""});EQUIPE_PRE_REF.set(funcionariosPre);renderizarCabecalhoPre();renderizarEscalaPre()}}
+function adicionarFuncionarioPre(){
+ if(!podeEditarPre)return alert("Desbloqueie a edição do pré-fechamento com a senha antes de adicionar funcionários.");
+ const n=prompt("Nome do novo funcionário:");
+ if(n?.trim()){
+  const nome=n.trim();
+  if(funcionariosPre.some(x=>x.toLocaleLowerCase("pt-BR")===nome.toLocaleLowerCase("pt-BR")))return alert("Esse funcionário já existe.");
+  funcionariosPre.push(nome);
+  escalaPreAtual.forEach(d=>{if(d&&!d[nome])d[nome]=""});
+  EQUIPE_PRE_REF.set(funcionariosPre).then(()=>{renderizarCabecalhoPre();renderizarEscalaPre();renderizarTarefasDiariasPre();bkRegistrarAuditoria("Funcionário adicionado ao pré-fechamento",nome);alert("✅ Funcionário adicionado.")}).catch(e=>alert("Erro ao adicionar funcionário: "+e.message));
+ }
+}
+function renomearFuncionarioPre(){
+ if(!podeEditarPre)return alert("Desbloqueie a edição do pré-fechamento com a senha antes de alterar funcionários.");
+ if(!funcionariosPre.length)return alert("Não há funcionários cadastrados.");
+ const antigo=prompt("Digite exatamente o nome atual do funcionário:\n"+funcionariosPre.join("\n"));
+ if(antigo===null)return;
+ const nomeAntigo=funcionariosPre.find(n=>n.toLocaleLowerCase("pt-BR")===antigo.trim().toLocaleLowerCase("pt-BR"));
+ if(!nomeAntigo)return alert("Funcionário não encontrado.");
+ const entrada=prompt("Digite o novo nome para "+nomeAntigo+":",nomeAntigo);
+ if(entrada===null)return;
+ const novo=entrada.trim();
+ if(!novo)return alert("O nome não pode ficar vazio.");
+ if(funcionariosPre.some(n=>n!==nomeAntigo&&n.toLocaleLowerCase("pt-BR")===novo.toLocaleLowerCase("pt-BR")))return alert("Já existe um funcionário com esse nome.");
+ funcionariosPre=funcionariosPre.map(n=>n===nomeAntigo?novo:n);
+ escalaPreAtual.forEach(d=>{if(d&&Object.prototype.hasOwnProperty.call(d,nomeAntigo)){d[novo]=d[nomeAntigo];delete d[nomeAntigo]}});
+ tarefasDiariasPre.forEach(a=>{if(a.funcionario===nomeAntigo)a.funcionario=novo});
+ Promise.all([EQUIPE_PRE_REF.set(funcionariosPre),ESCALA_PRE_REF.set(escalaPreAtual),TAREFAS_DIARIAS_PRE_REF.set(tarefasDiariasPre)]).then(()=>{renderizarEscalaPre();renderizarTarefasDiariasPre();bkRegistrarAuditoria("Funcionário renomeado no pré-fechamento",nomeAntigo+" → "+novo);alert("✅ Nome do funcionário atualizado.")}).catch(e=>alert("Erro ao alterar funcionário: "+e.message));
+}
 function adicionarTarefaPre(){
  if(!podeEditarPre)return alert("Desbloqueie a edição do pré-fechamento com a senha antes de criar uma tarefa.");
  const entrada=prompt("Digite o nome da nova tarefa do pré-fechamento:");
@@ -741,6 +793,50 @@ TAREFAS_PRE_REF.on("value",s=>{
 ESCALA_PRE_REF.on("value",s=>{escalaPreAtual=Array.isArray(s.val())&&s.val().length?s.val():JSON.parse(JSON.stringify(ESCALA_PRE_PADRAO));renderizarEscalaPre()})
 EQUIPE_PRE_REF.on("value",s=>{funcionariosPre=s.val()||["Gabriel","Amanda","Dandara","Luísa","Júlia"];renderizarCabecalhoPre();renderizarEscalaPre();if(typeof bkAtualizarSimulador==="function")bkAtualizarSimulador()})
 
+// Uma tarefa específica por dia da semana, separada das atribuições normais.
+let tarefasDiariasPre=Array.from({length:7},(_,i)=>({dia:i,tarefa:"—",funcionario:"—"}));
+function opcoesTarefasDiariasPre(valor){
+ const lista=[...new Set(["—",...OPCOES_PRE.filter(t=>t!=="Folga")])];
+ if(valor&&!lista.includes(valor))lista.push(valor);
+ return lista.map(t=>`<option value="${esc(t)}" ${t===valor?"selected":""}>${esc(t)}</option>`).join("");
+}
+function opcoesFuncionariosDiariasPre(valor){
+ const lista=[...new Set(["—",...funcionariosPre])];
+ if(valor&&!lista.includes(valor))lista.push(valor);
+ return lista.map(n=>`<option value="${esc(n)}" ${n===valor?"selected":""}>${esc(n)}</option>`).join("");
+}
+function renderizarTarefasDiariasPre(){
+ const cont=document.getElementById("listaTarefasDiariasPre");
+ if(!cont)return;
+ const pode=podeEditarPre;
+ cont.innerHTML=`<div class="pre-diaria-lista">${diasSemana.map((dia,i)=>{
+   const item=tarefasDiariasPre[i]||{dia:i,tarefa:"—",funcionario:"—"};
+   const tarefa=item.tarefa||"—",funcionario=item.funcionario||"—";
+   return `<article class="pre-diaria-card"><h3>📅 ${dia}</h3>${pode?`<div class="pre-diaria-edit"><label>Tarefa de limpeza<select data-diaria-tarefa="${i}" aria-label="Tarefa especial de ${dia}">${opcoesTarefasDiariasPre(tarefa)}</select></label><label>Funcionário responsável<select data-diaria-funcionario="${i}" aria-label="Funcionário responsável na ${dia}">${opcoesFuncionariosDiariasPre(funcionario)}</select></label></div>`:`<p><strong>Tarefa:</strong> ${esc(tarefa==="—"?"Não definida":tarefa)}</p><p><strong>Responsável:</strong> ${esc(funcionario==="—"?"Não definido":funcionario)}</p>`}</article>`;
+ }).join("")}</div>`;
+ if(pode){
+  cont.querySelectorAll("[data-diaria-tarefa]").forEach(sel=>sel.addEventListener("change",()=>{const i=Number(sel.dataset.diariaTarefa);tarefasDiariasPre[i]={...(tarefasDiariasPre[i]||{}),dia:i,tarefa:sel.value,funcionario:tarefasDiariasPre[i]?.funcionario||"—"}}));
+  cont.querySelectorAll("[data-diaria-funcionario]").forEach(sel=>sel.addEventListener("change",()=>{const i=Number(sel.dataset.diariaFuncionario);tarefasDiariasPre[i]={...(tarefasDiariasPre[i]||{}),dia:i,tarefa:tarefasDiariasPre[i]?.tarefa||"—",funcionario:sel.value}}));
+ }
+ const controles=document.getElementById("controlesTarefasDiariasPre");
+ if(controles)controles.style.display=pode?"block":"none";
+ const status=document.getElementById("statusTarefasDiariasPre");
+ if(status)status.textContent=pode?"🔓 Edição liberada: altere os campos e salve as atribuições.":"🔒 Para alterar as atribuições, desbloqueie a edição na engrenagem da escala acima.";
+}
+function salvarTarefasDiariasPre(){
+ if(!podeEditarPre)return alert("Desbloqueie a edição com a senha antes de salvar.");
+ const validas=tarefasDiariasPre.map((x,i)=>({dia:i,tarefa:String(x?.tarefa||"—"),funcionario:String(x?.funcionario||"—")}));
+ const escolhidas=validas.filter(x=>x.tarefa!=="—").map(x=>x.tarefa.toLocaleLowerCase("pt-BR"));
+ if(new Set(escolhidas).size!==escolhidas.length)return alert("Escolha uma tarefa diferente para cada dia. A mesma tarefa não pode ser atribuída em dois dias.");
+ TAREFAS_DIARIAS_PRE_REF.set(validas).then(()=>{tarefasDiariasPre=validas;bkRegistrarAuditoria("Atribuições de limpeza por dia salvas",validas.map(x=>diasSemana[x.dia]+": "+x.tarefa+" — "+x.funcionario).join("; "));renderizarTarefasDiariasPre();bkToast("Atribuições diárias salvas e sincronizadas.");alert("✅ Atribuições por dia salvas e sincronizadas!")}).catch(e=>alert("❌ Não foi possível salvar as atribuições: "+e.message));
+}
+TAREFAS_DIARIAS_PRE_REF.on("value",snap=>{
+ const salvas=snap.val();
+ if(Array.isArray(salvas)&&salvas.length){
+  tarefasDiariasPre=Array.from({length:7},(_,i)=>({dia:i,tarefa:"—",funcionario:"—",...(salvas.find(x=>Number(x?.dia)===i)||salvas[i]||{})}));
+ }
+ renderizarTarefasDiariasPre();
+});
 function calcularValidade(){const f=document.getElementById("dataFab").value,t=document.getElementById("tipoValidade").value,q=parseInt(document.getElementById("quantidade").value);if(!f||!q)return alert("⚠️ Preencha todos os campos!");const d=new Date(f);t==="dias"?d.setDate(d.getDate()+q):d.setMonth(d.getMonth()+q);document.getElementById("caixaResultado").style.display="block";document.getElementById("dtValidade").textContent=d.toLocaleDateString("pt-BR")}
 function usarHoje(){document.getElementById("dataFab").value=new Date().toISOString().split("T")[0]}
 
